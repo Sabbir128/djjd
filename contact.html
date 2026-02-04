@@ -1,0 +1,74 @@
+<!-- contact.html -->
+<!DOCTYPE html>
+<html lang="bn" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>যোগাযোগ - NewsDaily</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header class="header-main">
+        <div class="container">
+            <div class="header-content">
+                <a href="index.html" class="logo"><span>News</span>Daily</a>
+                <div class="header-actions">
+                    <button class="theme-toggle" onclick="toggleTheme()">🌓</button>
+                    <a href="index.html" class="btn btn-secondary">হোম</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="page-content">
+        <div class="container">
+            <h1>যোগাযোগ করুন</h1>
+            
+            <div class="contact-layout">
+                <div class="contact-info">
+                    <h3>আমাদের ঠিকানা</h3>
+                    <p>📍 ১২৩, নিউজ স্ট্রিট, ঢাকা-১০০০, বাংলাদেশ</p>
+                    <p>📧 info@newsdaily.com</p>
+                    <p>📞 +৮৮০ ১৭১২-৩৪৫৬৭৮</p>
+                    <p>🕐 সোম-শুক্র: ৯টা - ৬টা</p>
+                </div>
+                
+                <form class="contact-form" onsubmit="submitContact(event)">
+                    <div class="form-group">
+                        <label>আপনার নাম</label>
+                        <input type="text" required>
+                    </div>
+                    <div class="form-group">
+                        <label>ইমেইল</label>
+                        <input type="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label>বিষয়</label>
+                        <select>
+                            <option>সাধারণ জিজ্ঞাসা</option>
+                            <option>বিজ্ঞাপন</option>
+                            <option>অভিযোগ</option>
+                            <option>অন্যান্য</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>বার্তা</label>
+                        <textarea rows="5" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">পাঠান</button>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <script src="js/data.js"></script>
+    <script>
+        function submitContact(e) {
+            e.preventDefault();
+            alert('ধন্যবাদ! আপনার বার্তা পাঠানো হয়েছে।');
+            e.target.reset();
+        }
+    </script>
+</body>
+</html>
