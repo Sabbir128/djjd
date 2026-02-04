@@ -1,49 +1,65 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
+<html lang="bn" data-theme="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NewsDaily - Modern News Platform</title>
+    <title>NewsDaily - আপনার বিশ্বস্ত সংবাদ সূত্র</title>
+    <meta name="description" content="বাংলাদেশ ও বিশ্বের সর্বশেষ খবর, বিশ্লেষণ এবং বিশেষ প্রতিবেদন">
     <link rel="stylesheet" href="css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <!-- Top Bar -->
+    <!-- Reading Progress Bar -->
+    <div class="reading-progress" id="readingProgress"></div>
+
+    <!-- Breaking News Ticker -->
     <div class="top-bar">
         <div class="container">
             <div class="top-bar-content">
                 <div class="breaking-news">
-                    <span class="breaking-label">Breaking</span>
-                    <span id="ticker-text">Loading latest news...</span>
+                    <span class="breaking-label">জরুরি</span>
+                    <span id="ticker-text">লোড হচ্ছে...</span>
                 </div>
-                <div>
+                <div class="top-actions">
                     <span id="current-date"></span>
+                    <span class="weather" id="weather">🌤️ ২৮°C</span>
                 </div>
             </div>
         </div>
     </div>
 
     <!-- Header -->
-    <header class="header-main">
+    <header class="header-main" id="header">
         <div class="container">
             <div class="header-content">
                 <a href="index.html" class="logo">
                     <span>News</span>Daily
                 </a>
                 
-                <nav>
+                <nav class="main-nav">
                     <ul class="nav-menu" id="navMenu">
-                        <li><a href="#" onclick="filterCategory('all')">Home</a></li>
-                        <li><a href="#" onclick="filterCategory('politics')">Politics</a></li>
-                        <li><a href="#" onclick="filterCategory('technology')">Technology</a></li>
-                        <li><a href="#" onclick="filterCategory('sports')">Sports</a></li>
-                        <li><a href="#" onclick="filterCategory('entertainment')">Entertainment</a></li>
+                        <li><a href="index.html" class="active">হোম</a></li>
+                        <li><a href="category.html?cat=জাতীয়">জাতীয়</a></li>
+                        <li><a href="category.html?cat=রাজনীতি">রাজনীতি</a></li>
+                        <li><a href="category.html?cat=অর্থনীতি">অর্থনীতি</a></li>
+                        <li><a href="category.html?cat=খেলা">খেলা</a></li>
+                        <li><a href="category.html?cat=বিনোদন">বিনোদন</a></li>
+                        <li><a href="category.html?cat=প্রযুক্তি">প্রযুক্তি</a></li>
+                        <li><a href="popular.html">জনপ্রিয়</a></li>
                     </ul>
                 </nav>
 
                 <div class="header-actions">
-                    <button class="theme-toggle" onclick="toggleTheme()" title="Toggle Theme">🌓</button>
+                    <div class="search-box">
+                        <input type="text" id="searchInput" placeholder="খুঁজুন..." onkeypress="handleSearch(event)">
+                        <button onclick="goToSearch()">🔍</button>
+                    </div>
+                    <button class="theme-toggle" onclick="toggleTheme()" title="থিম পরিবর্তন">🌓</button>
+                    <a href="bookmarks.html" class="icon-btn" title="বুকমার্ক">🔖</a>
+                    <a href="profile.html" class="icon-btn" title="প্রোফাইল">👤</a>
+                    <a href="login.html" class="btn btn-primary">লগইন</a>
                     <button class="mobile-menu-btn" onclick="toggleMobileMenu()">☰</button>
-                    <a href="login.html" class="btn btn-primary">Admin Login</a>
                 </div>
             </div>
         </div>
@@ -54,39 +70,99 @@
         <!-- Hero Section -->
         <section class="hero-section">
             <div class="container">
-                <div class="hero-grid" id="heroSection"></div>
+                <div class="hero-grid" id="heroSection">
+                    <!-- Dynamic -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Trending Section -->
+        <section class="trending-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">🔥 ট্রেন্ডিং</h2>
+                    <a href="popular.html" class="view-all">সব দেখুন →</a>
+                </div>
+                <div class="trending-grid" id="trendingGrid">
+                    <!-- Dynamic -->
+                </div>
             </div>
         </section>
 
         <!-- Latest News -->
         <section class="container">
-            <h2 class="section-title">Latest News</h2>
-            <div class="news-grid" id="newsGrid"></div>
-        </section>
-    </main>
-
-    <!-- Article Page -->
-    <article class="article-page" id="articlePage">
-        <div class="article-header">
-            <img id="articleImage" src="" alt="">
-            <div class="article-header-content">
-                <span class="category-tag" id="articleCategory"></span>
-                <h1 id="articleTitle"></h1>
-                <div class="hero-meta">
-                    <span id="articleAuthor"></span>
-                    <span id="articleDate"></span>
+            <div class="section-header">
+                <h2 class="section-title">📰 সর্বশেষ সংবাদ</h2>
+                <div class="filter-tabs">
+                    <button class="tab-btn active" onclick="filterCategory('all')">সব</button>
+                    <button class="tab-btn" onclick="filterCategory('জাতীয়')">জাতীয়</button>
+                    <button class="tab-btn" onclick="filterCategory('রাজনীতি')">রাজনীতি</button>
+                    <button class="tab-btn" onclick="filterCategory('খেলা')">খেলা</button>
                 </div>
             </div>
-        </div>
-        <div class="article-body">
-            <button class="btn btn-secondary back-btn" onclick="showHome()">← Back to News</button>
-            <div class="article-meta">
-                <span id="articleReadTime"></span>
-                <span id="articleViews"></span>
+            <div class="news-grid" id="newsGrid">
+                <!-- Dynamic -->
             </div>
-            <div class="article-content" id="articleContent"></div>
-        </div>
-    </article>
+            <div class="pagination" id="pagination">
+                <!-- Dynamic -->
+            </div>
+        </section>
+
+        <!-- Categories Grid -->
+        <section class="categories-section">
+            <div class="container">
+                <h2 class="section-title">📂 ক্যাটেগরি</h2>
+                <div class="categories-grid">
+                    <a href="category.html?cat=জাতীয়" class="cat-card">
+                        <span class="cat-icon">🏛️</span>
+                        <h3>জাতীয়</h3>
+                        <span class="cat-count" id="count-national">০টি নিউজ</span>
+                    </a>
+                    <a href="category.html?cat=রাজনীতি" class="cat-card">
+                        <span class="cat-icon">⚖️</span>
+                        <h3>রাজনীতি</h3>
+                        <span class="cat-count" id="count-politics">০টি নিউজ</span>
+                    </a>
+                    <a href="category.html?cat=অর্থনীতি" class="cat-card">
+                        <span class="cat-icon">💰</span>
+                        <h3>অর্থনীতি</h3>
+                        <span class="cat-count" id="count-economy">০টি নিউজ</span>
+                    </a>
+                    <a href="category.html?cat=খেলা" class="cat-card">
+                        <span class="cat-icon">⚽</span>
+                        <h3>খেলা</h3>
+                        <span class="cat-count" id="count-sports">০টি নিউজ</span>
+                    </a>
+                    <a href="category.html?cat=বিনোদন" class="cat-card">
+                        <span class="cat-icon">🎬</span>
+                        <h3>বিনোদন</h3>
+                        <span class="cat-count" id="count-entertainment">০টি নিউজ</span>
+                    </a>
+                    <a href="category.html?cat=প্রযুক্তি" class="cat-card">
+                        <span class="cat-icon">💻</span>
+                        <h3>প্রযুক্তি</h3>
+                        <span class="cat-count" id="count-tech">০টি নিউজ</span>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Newsletter -->
+        <section class="newsletter-section">
+            <div class="container">
+                <div class="newsletter-box">
+                    <div class="newsletter-content">
+                        <h2>📧 নিউজলেটার সাবস্ক্রাইব করুন</h2>
+                        <p>প্রতিদিনের গুরুত্বপূর্ণ খবর সরাসরি আপনার ইমেইলে</p>
+                    </div>
+                    <form class="newsletter-form" onsubmit="subscribeNewsletter(event)">
+                        <input type="email" placeholder="আপনার ইমেইল" required>
+                        <button type="submit" class="btn btn-primary">সাবস্ক্রাইব</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </main>
 
     <!-- Toast Notification -->
     <div class="toast" id="toast">
@@ -98,36 +174,50 @@
         <div class="container">
             <div class="footer-grid">
                 <div class="footer-section">
-                    <h3>About NewsDaily</h3>
-                    <p>Your trusted source for breaking news, in-depth analysis, and exclusive stories from around the world.</p>
+                    <h3>NewsDaily</h3>
+                    <p>বাংলাদেশের সবচেয়ে বিশ্বস্ত অনলাইন নিউজ পোর্টাল। সত্য ও নিরপেক্ষ সংবাদ পরিবেশন আমাদের অঙ্গীকার।</p>
+                    <div class="social-links">
+                        <a href="#">📘</a>
+                        <a href="#">🐦</a>
+                        <a href="#">📸</a>
+                        <a href="#">▶️</a>
+                    </div>
                 </div>
                 <div class="footer-section">
-                    <h3>Categories</h3>
+                    <h3>ক্যাটেগরি</h3>
                     <ul>
-                        <li><a href="#" onclick="filterCategory('politics')">Politics</a></li>
-                        <li><a href="#" onclick="filterCategory('technology')">Technology</a></li>
-                        <li><a href="#" onclick="filterCategory('sports')">Sports</a></li>
-                        <li><a href="#" onclick="filterCategory('entertainment')">Entertainment</a></li>
+                        <li><a href="category.html?cat=জাতীয়">জাতীয়</a></li>
+                        <li><a href="category.html?cat=রাজনীতি">রাজনীতি</a></li>
+                        <li><a href="category.html?cat=অর্থনীতি">অর্থনীতি</a></li>
+                        <li><a href="category.html?cat=খেলা">খেলা</a></li>
                     </ul>
                 </div>
                 <div class="footer-section">
-                    <h3>Connect</h3>
+                    <h3>লিংক</h3>
                     <ul>
-                        <li><a href="#">Facebook</a></li>
-                        <li><a href="#">Twitter</a></li>
-                        <li><a href="#">Instagram</a></li>
-                        <li><a href="#">YouTube</a></li>
+                        <li><a href="about.html">আমাদের সম্পর্কে</a></li>
+                        <li><a href="contact.html">যোগাযোগ</a></li>
+                        <li><a href="privacy.html">প্রাইভেসি পলিসি</a></li>
+                        <li><a href="terms.html">শর্তাবলী</a></li>
+                        <li><a href="sitemap.html">সাইটম্যাপ</a></li>
                     </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>যোগাযোগ</h3>
+                    <p>📍 ঢাকা, বাংলাদেশ</p>
+                    <p>📧 info@newsdaily.com</p>
+                    <p>📞 +৮৮০ ১৭১২-৩৪৫৬৭৮</p>
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>&copy; 2026 NewsDaily. All rights reserved.</p>
+                <p>&copy; ২০২৬ NewsDaily. সর্বস্বত্ব সংরক্ষিত।</p>
+                <p>Developed By ❤️ Black Hawk</p>
             </div>
         </div>
     </footer>
 
     <script src="js/data.js"></script>
+    <script src="js/user.js"></script>
     <script src="js/main.js"></script>
 </body>
-    </html>
-        
+</html>
