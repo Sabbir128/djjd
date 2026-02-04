@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="bn" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Article - NewsDaily</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Reading Progress -->
+    <div class="reading-progress" id="readingProgress"></div>
+
+    <!-- Header -->
+    <header class="header-main">
+        <div class="container">
+            <div class="header-content">
+                <a href="index.html" class="logo"><span>News</span>Daily</a>
+                <div class="header-actions">
+                    <button class="theme-toggle" onclick="toggleTheme()">🌓</button>
+                    <a href="bookmarks.html" class="icon-btn">🔖</a>
+                    <a href="profile.html" class="icon-btn">👤</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Article Content -->
+    <article class="article-container">
+        <div class="container">
+            <!-- Breadcrumb -->
+            <nav class="breadcrumb">
+                <a href="index.html">হোম</a>
+                <span>/</span>
+                <a href="#" id="breadcrumbCat">ক্যাটেগরি</a>
+                <span>/</span>
+                <span id="breadcrumbTitle">আর্টিকেল</span>
+            </nav>
+
+            <!-- Article Header -->
+            <header class="article-full-header">
+                <div class="article-meta-top">
+                    <span class="category-tag" id="articleCategory">ক্যাটেগরি</span>
+                    <span class="reading-time" id="readingTime">⏱️ ৫ মিনিট পড়ুন</span>
+                </div>
+                <h1 id="articleTitle">আর্টিকেল শিরোনাম</h1>
+                <div class="article-author-box">
+                    <img id="authorImage" src="" alt="" class="author-img-large">
+                    <div class="author-info">
+                        <h4 id="articleAuthor">লেখকের নাম</h4>
+                        <span id="articleDate">তারিখ</span>
+                        <span id="articleViews">👁️ ১০০০ বার দেখা হয়েছে</span>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Featured Image -->
+            <div class="article-featured-image">
+                <img id="articleImage" src="" alt="">
+                <figcaption id="imageCaption"></figcaption>
+            </div>
+
+            <!-- Article Actions -->
+            <div class="article-actions-bar">
+                <div class="action-buttons">
+                    <button class="action-btn" onclick="likeArticle()" id="likeBtn">
+                        <span id="likeIcon">👍</span>
+                        <span id="likeCount">০</span>
+                    </button>
+                    <button class="action-btn" onclick="bookmarkArticle()" id="bookmarkBtn">
+                        <span id="bookmarkIcon">🔖</span>
+                        <span>সেভ করুন</span>
+                    </button>
+                    <button class="action-btn" onclick="shareArticle()">
+                        <span>📤</span>
+                        <span>শেয়ার</span>
+                    </button>
+                    <button class="action-btn" onclick="printArticle()">
+                        <span>🖨️</span>
+                        <span>প্রিন্ট</span>
+                    </button>
+                </div>
+                <div class="font-size-control">
+                    <span>অক্ষরের আকার:</span>
+                    <button onclick="changeFontSize(-1)">A-</button>
+                    <button onclick="changeFontSize(0)">A</button>
+                    <button onclick="changeFontSize(1)">A+</button>
+                </div>
+            </div>
+
+            <!-- Article Body -->
+            <div class="article-layout">
+                <main class="article-main">
+                    <div class="article-body-content" id="articleContent">
+                        <!-- Content here -->
+                    </div>
+
+                    <!-- Tags -->
+                    <div class="article-tags" id="articleTags">
+                        <!-- Dynamic tags -->
+                    </div>
+
+                    <!-- Author Box -->
+                    <div class="author-box-detailed">
+                        <img id="authorBoxImage" src="" alt="">
+                        <div>
+                            <h4>লেখক: <span id="authorBoxName"></span></h4>
+                            <p id="authorBoxBio">পেশাদার সাংবাদিক ও লেখক। দীর্ঘদিন ধরে জাতীয় ও আন্তর্জাতিক বিষয়ে লিখে আসছেন।</p>
+                        </div>
+                    </div>
+
+                    <!-- Comments Section -->
+                    <section class="comments-section">
+                        <h3>💬 মন্তব্য (<span id="commentCount">০</span>)</h3>
+                        
+                        <!-- Comment Form -->
+                        <form class="comment-form" id="commentForm" onsubmit="addComment(event)">
+                            <div class="form-row">
+                                <input type="text" id="commentName" placeholder="আপনার নাম" required>
+                                <input type="email" id="commentEmail" placeholder="ইমেইল (ঐচ্ছিক)">
+                            </div>
+                            <textarea id="commentText" rows="4" placeholder="আপনার মন্তব্য লিখুন..." required></textarea>
+                            <button type="submit" class="btn btn-primary">মন্তব্য পোস্ট করুন</button>
+                        </form>
+
+                        <!-- Comments List -->
+                        <div class="comments-list" id="commentsList">
+                            <!-- Dynamic -->
+                        </div>
+                    </section>
+                </main>
+
+                <!-- Sidebar -->
+                <aside class="article-sidebar">
+                    <!-- Related Articles -->
+                    <div class="sidebar-widget">
+                        <h4>📎 সম্পর্কিত খবর</h4>
+                        <div id="relatedArticles">
+                            <!-- Dynamic -->
+                        </div>
+                    </div>
+
+                    <!-- Popular in Category -->
+                    <div class="sidebar-widget">
+                        <h4>🔥 এই ক্যাটেগরিতে জনপ্রিয়</h4>
+                        <div id="popularInCategory">
+                            <!-- Dynamic -->
+                        </div>
+                    </div>
+                </aside>
+            </div>
+        </div>
+    </article>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-bottom" style="border-top: 1px solid #333; padding-top: 20px; margin-top: 40px;">
+                <p>&copy; ২০২৬ NewsDaily</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Share Modal -->
+    <div class="modal" id="shareModal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeShareModal()">&times;</span>
+            <h3>শেয়ার করুন</h3>
+            <div class="share-buttons">
+                <button onclick="shareTo('facebook')">📘 Facebook</button>
+                <button onclick="shareTo('twitter')">🐦 Twitter</button>
+                <button onclick="shareTo('whatsapp')">📱 WhatsApp</button>
+                <button onclick="copyLink()">📋 লিংক কপি</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/data.js"></script>
+    <script src="js/user.js"></script>
+    <script src="js/comments.js"></script>
+    <script src="js/article.js"></script>
+</body>
+</html>
