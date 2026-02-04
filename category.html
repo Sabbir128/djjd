@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="bn" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Category - NewsDaily</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header class="header-main">
+        <div class="container">
+            <div class="header-content">
+                <a href="index.html" class="logo"><span>News</span>Daily</a>
+                <div class="header-actions">
+                    <button class="theme-toggle" onclick="toggleTheme()">🌓</button>
+                    <a href="bookmarks.html" class="icon-btn">🔖</a>
+                    <a href="profile.html" class="icon-btn">👤</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="category-page">
+        <div class="container">
+            <div class="category-header">
+                <h1 id="categoryTitle">ক্যাটেগরি</h1>
+                <p id="categoryDesc">এই ক্যাটেগরির সকল খবর</p>
+            </div>
+
+            <div class="category-filter-bar">
+                <span id="resultCount">০টি ফলাফল</span>
+                <select id="sortSelect" onchange="sortArticles()">
+                    <option value="newest">নতুন থেকে পুরাতন</option>
+                    <option value="oldest">পুরাতন থেকে নতুন</option>
+                    <option value="popular">জনপ্রিয়</option>
+                    <option value="most-viewed">সবচেয়ে দেখা</option>
+                </select>
+            </div>
+
+            <div class="news-grid" id="categoryGrid">
+                <!-- Dynamic -->
+            </div>
+
+            <div class="pagination" id="categoryPagination">
+                <!-- Dynamic -->
+            </div>
+        </div>
+    </main>
+
+    <script src="js/data.js"></script>
+    <script src="js/user.js"></script>
+    <script>
+        let currentCategory = '';
+        let currentPage = 1;
+        const itemsPerPage = 9;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            currentCategory = urlParams.get('cat');
+            
+            if (!currentCategory) {
+                window.location.href = 'index.html';
+                return;
+            }
+            
+            document.getElementById('categoryTitle').textContent = currentCategory;
+            loadCategoryArticles();
+        });
+
+        function loadCategoryArticles() {
+            const allPosts = DataManager.getPostsByCategory(currentCategory);
+            const sortType = document.getElementById('sortSelect').value;
+            
+            // Sort
+            let sorted = [...allPosts];
+            switch(sortType) {
+                case 'newest':
+                    sorted.sort((a, b) => new Date(b.date) - new Date(a.date));
+                    break;
+                case 'oldest':
+                    sorted.sort((a, b) => new Date(a.date) - new Date(b.date));
+                    break;
+                case 'popular':
+                    sorted.sort((a, b) => (b.likes || 0) - (a.likes || 0));
+                    break;
+                case 'most-viewed':
+                    sorted.sort((a, b) => (b.views || 0) - (a.views || 0));
+                    break;
+            }
+            
+            // Pagination
+            const totalItems = sorted.length;
+            const totalPages = Math.ceil(totalItems / itemsPerPage);
+            const start = (currentPage - 1) * itemsPerPage;
+            const paginated = sorted.slice(start, start + itemsPerPage);
+            
+            // Update count
+            document.getElementById('resultCount').textContent = `${totalItems}টি ফলাফল`;
+            
+            // Render
+            const grid = document.getElementById('categoryGrid');
+            if (paginated.length === 0) {
+                grid.innerHTML = '<p style="text-align: center; grid-column: 1/-1;">এই ক্যাটেগরিতে কোনো খবর নেই</p>';
+            } else {
+                grid.innerHTML = paginated.map(post => `
+                    <article class="news-card">
+                        <div style="overflow: hidden;">
+                            <img class="news-image" src="${post.image}" alt="${post.title}" onerror="this.src='https://via.placeholder.com/400x300'">
+                        </div>
+                        <div class="news-content">
+                            <div class="news-category">${post.category}</div>
+                            <h3 class="news-title"><a href="article.html?id=${post.id}">${post.title}</a></h3>
+                            <p class="news-excerpt">${post.excerpt}</p>
+                            <div class="news-meta">
+                                <span>${post.author}</span>
+                                <span>${formatDate(post.date)}</span>
+                            </div>
+                        </div>
+                    </article>
+                `).join('');
+            }
+            
+            // Pagination buttons
+            const pagination = document.getElementById('categoryPagination');
+            let paginationHTML = '';
+            for (let i = 1; i <= totalPages; i++) {
+                paginationHTML += `
+                    <button class="${i === currentPage ? 'active' : ''}" onclick="goToPage(${i})">${i}</button>
+                `;
+            }
+            pagination.innerHTML = paginationHTML;
+        }
+
+        function sortArticles() {
+            currentPage = 1;
+            loadCategoryArticles();
+        }
+
+        function goToPage(page) {
+            currentPage = page;
+            loadCategoryArticles();
+            window.scrollTo(0, 0);
+        }
+    </script>
+</body>
+</html>
